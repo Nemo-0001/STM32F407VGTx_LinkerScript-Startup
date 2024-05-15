@@ -22,6 +22,14 @@ MEMORY
 
 /* Sections */
 SECTIONS{
+  /* The startup code into "FLASH" */
+  .isr_vector :
+  {
+    . = ALIGN(4);
+    *(.isr_vector)
+    . = ALIGN(4);
+  } >FLASH
+
   /* .text section, The program code and other data into "FLASH" */
   .text :
   {
@@ -40,6 +48,9 @@ SECTIONS{
     *(.rodata*)        /* .rodata* sections (constants, strings, etc.) */
     . = ALIGN(4);
   } >FLASH
+
+  /* Used by the startup code to initialize the data */
+  _sidata = LOADADDR(.data);
 
   /* .data section, Initialized data sections into "RAM" */
   .data :
